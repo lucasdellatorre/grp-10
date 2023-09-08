@@ -5,3 +5,6 @@ chmod +x $BASE_DIR/target/etc/init.d/S41network-config
 
 cp $BASE_DIR/../custom-scripts/hello/S50hello $BASE_DIR/target/etc/init.d
 chmod +x $BASE_DIR/target/etc/init.d/S50hello
+
+cp $BASE_DIR/../custom-scripts/T1/webserver.py $BASE_DIR/target/usr/bin
+chmod +x $BASE_DIR/target/usr/bin/webserver.py
