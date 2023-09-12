@@ -17,6 +17,10 @@ class MyHandler(BaseHTTPRequestHandler):
         uptime = os.popen('cat /proc/uptime').read()
         cpu_name = os.popen('grep "model name" /proc/cpuinfo').read()
         cpu_vel = os.popen('grep "cpu MHz" /proc/cpuinfo').read()
+        #Capacidade ocupada do processador
+        ram = os.popen('grep -E "MemTotal|MemAvailable" /proc/meminfo').read()
+        sys_version = os.popen('cat /proc/version').read()
+        #Lista de processos em execução
 
 
         s.send_response(200)
@@ -25,6 +29,8 @@ class MyHandler(BaseHTTPRequestHandler):
         s.wfile.write(f"<p>Data e Hora: {datahora}</p>".encode())
         s.wfile.write(f"<p>Uptime: {uptime}</p>".encode())
         s.wfile.write(f"<p>Modelo do processador e velocidade: {cpu_name} {cpu_vel} MHz</p>".encode())
+        s.wfile.write(f"<p>Quantidade de memória RAM total e usada : {ram}</p>".encode())
+        s.wfile.write(f"<p>System version: {sys_version}</p>".encode())
         # If someone went to "http://something.somewhere.net/foo/bar/",
         # then s.path equals "/foo/bar/".
         s.wfile.write("</body></html>".encode())
