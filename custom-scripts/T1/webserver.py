@@ -106,7 +106,7 @@ class MyHandler(BaseHTTPRequestHandler):
         cpu_capacity =  GetCpuLoad().getcpuload()
         ram = os.popen('grep -E "MemTotal|MemAvailable" /proc/meminfo').read()
         sys_version = os.popen('cat /proc/version').read()
-        proc_list = os.popen("ps aux | awk '{print $1, $3}' | tail -n +2'").read().split("\n")
+        proc_list = os.popen("ps aux | awk '{print $1, $3}' | tail -n +2").read().split("\n")
 
 
         s.send_response(200)
