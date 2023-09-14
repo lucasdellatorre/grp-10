@@ -104,7 +104,8 @@ class MyHandler(BaseHTTPRequestHandler):
         cpu_name = os.popen('grep "model name" /proc/cpuinfo').read()
         cpu_vel = os.popen('grep "cpu MHz" /proc/cpuinfo').read()
         cpu_capacity =  GetCpuLoad().getcpuload()
-        ram = os.popen('grep -E "MemTotal|MemAvailable" /proc/meminfo').read()
+        ram_total = os.popen('grep -E "MemTotal" /proc/meminfo').read()
+        ram_available = os.popen('grep -E "MemAvailable" /proc/meminfo').read()
         sys_version = os.popen('cat /proc/version').read()
         proc_list = os.popen("ps aux | awk '{print $1, $3}' | tail -n +2").read().split("\n")
 
@@ -113,13 +114,19 @@ class MyHandler(BaseHTTPRequestHandler):
         s.send_header("Content-type", "text/html")
         s.end_headers()
         s.wfile.write(f"<p>Data e Hora: {datahora}</p>".encode())
-        s.wfile.write(f"<p>Uptime: {uptime}</p>".encode())
-        s.wfile.write(f"<p>Modelo do processador e velocidade: {cpu_name} {cpu_vel} MHz</p>".encode())
+        s.wfile.write(f"<p>Uptime (em segundos):</p>".encode())
+        s.wfile.write(f"<p>&emsp;- Uptime total do sistema: {uptime.split()[0]}s</p>".encode())
+        s.wfile.write(f"<p>&emsp;- Tempo de Idle (Idle Time): {uptime.split()[1]}s</p>".encode())
+        s.wfile.write(f"<p>Modelo do processador e velocidade: </p>".encode())
+        s.wfile.write(f"<p>&emsp;- {cpu_name}</p>".encode())
+        s.wfile.write(f"<p>&emsp;- {cpu_vel} MHz</p>".encode())
         s.wfile.write(f"<p>Capacidade ocupada do processador: </p>".encode())
         for cpu in cpu_capacity:
             usage = cpu_capacity[cpu]
-            s.wfile.write(f"<p> {cpu}: {usage} </p>".encode())
-        s.wfile.write(f"<p>Quantidade de memória RAM total e usada : {ram}</p>".encode())
+            s.wfile.write(f"<p>&emsp;- {cpu}: {usage}% </p>".encode())
+        s.wfile.write(f"<p>Quantidade de memória RAM total e usada:</p>".encode())
+        s.wfile.write(f"<p>&emsp;- {ram_total}</p>".encode())
+        s.wfile.write(f"<p>&emsp;- {ram_available}</p>".encode())
         s.wfile.write(f"<p>Versao do sistema: {sys_version}</p>".encode())
         s.wfile.write(f"<p>Lista de processos em execução (pid e comando): </p>".encode())
         for line in proc_list:
