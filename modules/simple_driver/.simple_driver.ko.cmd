@@ -1,0 +1,1 @@
+cmd_/workspaces/grp-10/modules/simple_driver/simple_driver.ko := ld -r -m elf_i386 -T ./scripts/module-common.lds --build-id  -o /workspaces/grp-10/modules/simple_driver/simple_driver.ko /workspaces/grp-10/modules/simple_driver/simple_driver.o /workspaces/grp-10/modules/simple_driver/simple_driver.mod.o ;  true
