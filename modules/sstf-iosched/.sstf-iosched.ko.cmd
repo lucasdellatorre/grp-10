@@ -1,0 +1,1 @@
+cmd_/workspaces/grp-10/modules/sstf-iosched/sstf-iosched.ko := ld -r -m elf_i386 -T ./scripts/module-common.lds --build-id  -o /workspaces/grp-10/modules/sstf-iosched/sstf-iosched.ko /workspaces/grp-10/modules/sstf-iosched/sstf-iosched.o /workspaces/grp-10/modules/sstf-iosched/sstf-iosched.mod.o ;  true
