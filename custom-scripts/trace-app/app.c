@@ -3,18 +3,21 @@
 #include <semaphore.h>
 #include <string.h>
 
-#define THREADS 5
+#define THREADS 3
+#define BUFFER_SIZE 1000
 
-char buffer[2048];
+char buffer[BUFFER_SIZE];
+int size = 0;
 
 pthread_barrier_t barrier;
+pthread_mutex_t mutex;
+pthread_mutexattr_t attr;
 
 void *task(void *arg)
 {
 	pthread_barrier_wait(&barrier);
 
 	int tid;
-	int cont = 5;
 	tid = (int)(long int)arg;
 
 	char id = 'A' + tid;
@@ -23,8 +26,16 @@ void *task(void *arg)
 	id_str[0] = id;
 	id_str[1] = '\0';
 
-	for (int i = 0; i < cont; i++) {
+	while (1)
+	{
+		pthread_mutex_lock(&mutex);
+		if (size >= BUFFER_SIZE - 1) {
+			pthread_mutex_unlock(&mutex);
+			break;
+		}
 		strncat(buffer, id_str, 1);
+		size++;
+		pthread_mutex_unlock(&mutex);
 	}
 }
 
@@ -33,18 +44,17 @@ int main(void)
 	long int i;
 	pthread_t threads[THREADS];
 
+	pthread_mutex_init(&mutex, &attr);
 	pthread_barrier_init(&barrier, NULL, THREADS);
 
-	for (i = 0; i < THREADS; i++)
+	for (i = 0; i < THREADS; i++) {
 		pthread_create(&threads[i], NULL, task, (void *)i);
-
-	pthread_barrier_wait(&barrier);
+	}
 
 	for (i = 0; i < THREADS; i++) {
 		pthread_join(threads[i], NULL);
 	}
 
-	// Clean up the barrier
 	pthread_barrier_destroy(&barrier);
 
 	printf("%s\n", buffer);
@@ -52,5 +62,5 @@ int main(void)
 	return 0;
 }
 
-//gcc app.c -O2 -o appGcc
-//usar semaforo
+//gcc app.c -O2 -o appGcc -lpthread
+//taskset -c 0 ./appGcc
