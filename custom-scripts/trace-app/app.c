@@ -4,7 +4,7 @@
 #include <string.h>
 
 #define THREADS 3
-#define BUFFER_SIZE 1000
+#define BUFFER_SIZE 5236
 
 char buffer[BUFFER_SIZE];
 int size = 0;

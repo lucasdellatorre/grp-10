@@ -104,7 +104,6 @@ print_memory_stats()
 // Compacta o buffer
 // Ex: AAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBB
 // Output: AB
-// { Todo: realocar o buffer }
 void resume_buffer() {
     char current_letter, next_letter = 0;
     int new_buffer_pointer = 0;
@@ -134,14 +133,5 @@ void print_scheduled_threads_summary(int *arr)
     for (int i = 0; i < THREADS; i++) printf("%c: %d\n", ('A' + i), arr[i]);
 }
 
-////////////////////////////////////////////
-// Desalocar o buffer
-// printf("BUFFER_SIZE: %d\n", BUFFER_SIZE);
+//sudo unshare --pid --fork bash
 
-// buffer = (char*)realloc(buffer, sizeof(char) * BUFFER_SIZE);
-
-// for (int i = 0; i < BUFFER_SIZE; i++) {
-//     buffer[i] = new_buffer[i];
-// }
-
-// free(new_buffer);
